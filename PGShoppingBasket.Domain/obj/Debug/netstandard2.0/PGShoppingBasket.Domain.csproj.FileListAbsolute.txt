@@ -6,3 +6,4 @@ C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\ne
 C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\netstandard2.0\PGShoppingBasket.Domain.AssemblyInfo.cs
 C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\netstandard2.0\PGShoppingBasket.Domain.dll
 C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\netstandard2.0\PGShoppingBasket.Domain.pdb
+C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\netstandard2.0\PGShoppingBasket.Domain.csprojAssemblyReference.cache
