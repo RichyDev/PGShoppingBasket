@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PGShoppingBasket.Domain
 {
@@ -7,14 +8,14 @@ namespace PGShoppingBasket.Domain
     {
         public Customer Customer { get; }
 
-        private readonly Dictionary<Guid, BasketProduct> _products = new Dictionary<Guid, BasketProduct>();
-        public IEnumerable<BasketProduct> Products => _products.Values;
+        private readonly List<BasketProduct> _products = new List<BasketProduct>();
+        public IEnumerable<BasketProduct> Products => _products;
 
-        private readonly Dictionary<string, OfferVoucher> _offerVouchers = new Dictionary<string, OfferVoucher>();
-        public IEnumerable<OfferVoucher> OfferVouchers => _offerVouchers.Values;
+        private readonly List<OfferVoucher> _offerVouchers = new List<OfferVoucher>();
+        public IEnumerable<OfferVoucher> OfferVouchers => _offerVouchers;
 
-        private readonly Dictionary<string, GiftVoucher> _giftVouchers = new Dictionary<string, GiftVoucher>();
-        public IEnumerable<GiftVoucher> GiftVouchers => _giftVouchers.Values;
+        private readonly List<GiftVoucher> _giftVouchers = new List<GiftVoucher>();
+        public IEnumerable<GiftVoucher> GiftVouchers => _giftVouchers;
 
         private readonly List<string> _messages = new List<string>();
         public IEnumerable<string> Messages => _messages;
@@ -28,16 +29,20 @@ namespace PGShoppingBasket.Domain
 
         public void AddProduct(BasketProduct product)
         {
-            if (_products.ContainsKey(product.Id))
+            var existingProduct = _products.SingleOrDefault(x => x.Id == product.Id);
+
+            if (existingProduct != null)
             {
                 // Allows the same product to be added multiple times, with the quantity updated
-                var originalQuantity = _products[product.Id].Quantity;
+                // This also allows the price to be changed if it was updated whilst the basket existed
+                var originalQuantity = existingProduct.Quantity;
                 product.Quantity += originalQuantity;
-                _products[product.Id] = product;
+                _products.Remove(existingProduct);
+                _products.Add(product);
             }
             else
             {
-                _products.Add(product.Id, product);
+                _products.Add(product);
             }
 
             UpdateBasket();
@@ -45,20 +50,20 @@ namespace PGShoppingBasket.Domain
 
         public void ApplyOfferVoucher(OfferVoucher offerVoucher)
         {
-            if (_offerVouchers.ContainsKey(offerVoucher.Code))
+            if (_offerVouchers.Any(x => x.Code == offerVoucher.Code))
                 throw new Exception($"Basket already has Offer Voucher with code '{offerVoucher.Code}' applied");
 
-            _offerVouchers.Add(offerVoucher.Code, offerVoucher);
+            _offerVouchers.Add(offerVoucher);
 
             UpdateBasket();
         }
 
         public void RedeemGiftVoucher(GiftVoucher giftVoucher)
         {
-            if (_giftVouchers.ContainsKey(giftVoucher.Code))
+            if (_giftVouchers.Any(x => x.Code == giftVoucher.Code))
                 throw new Exception($"Basket already has Gift Voucher with code '{giftVoucher.Code}' applied");
 
-            _giftVouchers.Add(giftVoucher.Code, giftVoucher);
+            _giftVouchers.Add(giftVoucher);
 
             UpdateBasket();
         }
@@ -69,20 +74,22 @@ namespace PGShoppingBasket.Domain
 
             foreach (var p in _products)
             {
-                productTotal += p.Value.Total;
+                productTotal += p.Total;
             }
 
             var total = productTotal;
 
             foreach (var o in _offerVouchers)
             {
-                if (o.Value.BasketThreshold > productTotal)
-                    total -= o.Value.Amount;
+                if(_products.All(x => x.Category != o.Category))
+                    _messages.Add($"There are no products in your basket applicable to voucher Voucher {o.Code}");
+                else if (o.BasketThreshold > productTotal)
+                    total -= o.Amount;
             }
 
             foreach (var g in _giftVouchers)
             {
-                total -= g.Value.Amount;
+                total -= g.Amount;
             }
 
             Total = total;

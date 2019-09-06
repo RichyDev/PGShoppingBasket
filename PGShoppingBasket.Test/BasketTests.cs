@@ -15,6 +15,7 @@ namespace PGShoppingBasket.Test
         private readonly ProductCategory _headGearCategory;
         private readonly ProductCategory _giftVoucherCategory;
 
+        private readonly BasketProduct _expensiveHatProduct;
         private readonly BasketProduct _cheapHatProduct;
         private readonly BasketProduct _expensiveJumperProduct;
         private readonly BasketProduct _cheapJumperProduct;
@@ -34,6 +35,7 @@ namespace PGShoppingBasket.Test
             _headGearCategory = new ProductCategory("Head Gear");
             _giftVoucherCategory = new ProductCategory("Gift Vouchers");
 
+            _expensiveHatProduct = new BasketProduct("Hat", 25.00m, _headWearCategory, 1);
             _cheapHatProduct = new BasketProduct("Hat", 10.50m, _headWearCategory, 1);
             _expensiveJumperProduct = new BasketProduct("Jumper", 54.65m, _topsCategory, 1);
             _cheapJumperProduct = new BasketProduct("Jumper", 26.00m, _topsCategory, 1);
@@ -73,7 +75,7 @@ namespace PGShoppingBasket.Test
             var basket = new Basket(_customer);
 
             // Act
-            basket.AddProduct(_cheapHatProduct);
+            basket.AddProduct(_expensiveHatProduct);
             basket.AddProduct(_cheapJumperProduct);
             basket.ApplyOfferVoucher(_headGearOfferVoucher);
 
@@ -92,7 +94,7 @@ namespace PGShoppingBasket.Test
             var basket = new Basket(_customer);
 
             // Act
-            basket.AddProduct(_cheapHatProduct);
+            basket.AddProduct(_expensiveHatProduct);
             basket.AddProduct(_cheapJumperProduct);
             basket.AddProduct(_headLightProduct);
             basket.ApplyOfferVoucher(_headGearOfferVoucher);
@@ -112,7 +114,7 @@ namespace PGShoppingBasket.Test
             var basket = new Basket(_customer);
 
             // Act
-            basket.AddProduct(_cheapHatProduct);
+            basket.AddProduct(_expensiveHatProduct);
             basket.AddProduct(_cheapJumperProduct);
             basket.RedeemGiftVoucher(_fivePoundGiftVoucher);
             basket.ApplyOfferVoucher(_fiveOffFiftyOfferVoucher);
@@ -132,7 +134,7 @@ namespace PGShoppingBasket.Test
             var basket = new Basket(_customer);
 
             // Act
-            basket.AddProduct(_cheapHatProduct);
+            basket.AddProduct(_expensiveHatProduct);
             basket.AddProduct(_thirtyPoundGiftVoucherProduct);
             basket.ApplyOfferVoucher(_fiveOffFiftyOfferVoucher);
 
