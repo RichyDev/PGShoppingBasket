@@ -6,6 +6,8 @@ namespace PGShoppingBasket.Domain
 {
     public class Basket : Entity, IAggregateRoot
     {
+        private bool _isDirty = false;
+
         public Customer Customer { get; }
 
         private readonly List<BasketProduct> _products = new List<BasketProduct>();
@@ -19,8 +21,6 @@ namespace PGShoppingBasket.Domain
 
         private readonly List<string> _messages = new List<string>();
         public IEnumerable<string> Messages => _messages;
-
-        public decimal Total { get; private set; }
 
         public Basket(Customer customer)
         {
@@ -45,7 +45,7 @@ namespace PGShoppingBasket.Domain
                 _products.Add(product);
             }
 
-            UpdateBasket();
+            _isDirty = true;
         }
 
         public void ApplyOfferVoucher(OfferVoucher offerVoucher)
@@ -55,7 +55,7 @@ namespace PGShoppingBasket.Domain
 
             _offerVouchers.Add(offerVoucher);
 
-            UpdateBasket();
+            _isDirty = true;
         }
 
         public void RedeemGiftVoucher(GiftVoucher giftVoucher)
@@ -65,10 +65,10 @@ namespace PGShoppingBasket.Domain
 
             _giftVouchers.Add(giftVoucher);
 
-            UpdateBasket();
+            _isDirty = true;
         }
 
-        private void UpdateBasket()
+        public decimal GetTotal()
         {
             var productTotal = 0.00m;
 
@@ -81,10 +81,31 @@ namespace PGShoppingBasket.Domain
 
             foreach (var o in _offerVouchers)
             {
-                if(_products.All(x => x.Category != o.Category))
-                    _messages.Add($"There are no products in your basket applicable to voucher Voucher {o.Code}");
-                else if (o.BasketThreshold > productTotal)
-                    total -= o.Amount;
+                var discount = o.Amount;
+
+                if (o.Category != null)
+                {
+                    // This is a voucher for a specific product category. So get those products
+                    var categoryProducts = _products.Where(x => x.Category == o.Category).ToList();
+
+                    if (categoryProducts.Count == 0)
+                    {
+                        _messages.Add($"There are no products in your basket applicable to voucher Voucher {o.Code}");
+                        break;
+                    }
+
+                    // See what the total of the qualifying category vouchers is
+                    var categoryProductsTotal = categoryProducts.Sum(x => x.Total);
+
+                    // if the qualifying total is less than the voucher then use the qualifying total
+                    discount = o.Amount >= categoryProductsTotal ? categoryProductsTotal : o.Amount;
+                }
+
+                // Make sure the total of the products is enough to reach the voucher threshold
+                if (productTotal > o.BasketThreshold)
+                {
+                    total -= discount;
+                }
             }
 
             foreach (var g in _giftVouchers)
@@ -92,7 +113,7 @@ namespace PGShoppingBasket.Domain
                 total -= g.Amount;
             }
 
-            Total = total;
+            return total;
         }
     }
 }

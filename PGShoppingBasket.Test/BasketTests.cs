@@ -39,7 +39,7 @@ namespace PGShoppingBasket.Test
             _cheapHatProduct = new BasketProduct("Hat", 10.50m, _headWearCategory, 1);
             _expensiveJumperProduct = new BasketProduct("Jumper", 54.65m, _topsCategory, 1);
             _cheapJumperProduct = new BasketProduct("Jumper", 26.00m, _topsCategory, 1);
-            _headLightProduct = new BasketProduct("Hat", 10.50m, _headGearCategory, 1);
+            _headLightProduct = new BasketProduct("Head Light", 3.50m, _headGearCategory, 1);
             _thirtyPoundGiftVoucherProduct = new BasketProduct("£30 Gift Voucher ", 30.00m, _giftVoucherCategory, 1);
 
             _fivePoundGiftVoucher = new GiftVoucher("XXX-XXX", 5.00m);
@@ -50,7 +50,7 @@ namespace PGShoppingBasket.Test
 
         // Scenario: Basket 1
         [Test]
-        public void GivenItemsInBasket_WhenApplyGiftVoucher_ThenTotalIsCorrect()
+        public void Basket1_GivenItemsInBasket_WhenApplyGiftVoucher_ThenTotalIsCorrect()
         {
             // Arrange
             var basket = new Basket(_customer);
@@ -63,13 +63,13 @@ namespace PGShoppingBasket.Test
             TestContext.Write(basket.Overview());
 
             // Assert
-            Assert.AreEqual(60.15, basket.Total);
+            Assert.AreEqual(60.15, basket.GetTotal());
             Assert.IsEmpty(basket.Messages);
         }
 
         // Scenario: Basket 2
         [Test]
-        public void GivenItemsInBasket_WhenApplyOfferVoucherNotReachingThreshold_ThenTotalIsCorrectAndMessageDisplayed()
+        public void Basket2_GivenItemsInBasket_WhenApplyOfferVoucherNotReachingThreshold_ThenTotalIsCorrectAndMessageDisplayed()
         {
             // Arrange
             var basket = new Basket(_customer);
@@ -82,13 +82,13 @@ namespace PGShoppingBasket.Test
             TestContext.Write(basket.Overview());
 
             // Assert
-            Assert.AreEqual(51.00, basket.Total);
+            Assert.AreEqual(51.00, basket.GetTotal());
             Assert.Contains("There are no products in your basket applicable to voucher Voucher YYY-YYY", basket.Messages.ToArray());
         }
 
         // Scenario: Basket 3
         [Test]
-        public void GivenItemsInBasket_WhenApplyOfferVoucherReachingThreshold_ThenDiscountDoesNotExceedQualifyingItemPriceAndTotalIsCorrect()
+        public void Basket3_GivenItemsInBasket_WhenApplyOfferVoucherReachingThreshold_ThenDiscountDoesNotExceedQualifyingItemPriceAndTotalIsCorrect()
         {
             // Arrange
             var basket = new Basket(_customer);
@@ -102,13 +102,13 @@ namespace PGShoppingBasket.Test
             TestContext.Write(basket.Overview());
 
             // Assert
-            Assert.AreEqual(51.00, basket.Total);
+            Assert.AreEqual(51.00, basket.GetTotal());
             Assert.IsEmpty(basket.Messages);
         }
 
         // Scenario: Basket 4
         [Test]
-        public void GivenItemsInBasket_WhenApplyGiftVoucherAndApplyOfferVoucher_ThenTotalIsCorrect()
+        public void Basket4_GivenItemsInBasket_WhenApplyGiftVoucherAndApplyOfferVoucher_ThenTotalIsCorrect()
         {
             // Arrange
             var basket = new Basket(_customer);
@@ -122,13 +122,13 @@ namespace PGShoppingBasket.Test
             TestContext.Write(basket.Overview());
 
             // Assert
-            Assert.AreEqual(41.00, basket.Total);
+            Assert.AreEqual(41.00, basket.GetTotal());
             Assert.IsEmpty(basket.Messages);
         }
 
         // Scenario: Basket 5
         [Test]
-        public void GivenItemsInBasketIncludingGiftVoucher_WhenApplyOfferVoucherNotReachingThreshold_ThenTotalIsCorrectAndMessageDisplayed()
+        public void Basket5_GivenItemsInBasketIncludingGiftVoucher_WhenApplyOfferVoucherNotReachingThreshold_ThenTotalIsCorrectAndMessageDisplayed()
         {
             // Arrange
             var basket = new Basket(_customer);
@@ -141,7 +141,7 @@ namespace PGShoppingBasket.Test
             TestContext.Write(basket.Overview());
 
             // Assert
-            Assert.AreEqual(55.00, basket.Total);
+            Assert.AreEqual(55.00, basket.GetTotal());
             Assert.Contains("You have not reached the spend threshold for voucher YYY-YYY. Spend another £25.01 to receive £5.00 discount from your basket total.", basket.Messages.ToArray());
         }
     }

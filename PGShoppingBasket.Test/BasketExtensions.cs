@@ -32,7 +32,7 @@ namespace PGShoppingBasket.Test
 
             basketBuilder.AppendLine("------------");
 
-            basketBuilder.AppendLine($"Total: {basket.Total}");
+            basketBuilder.AppendLine($"Total: {basket.GetTotal()}");
 
             basketBuilder.AppendLine("------------");
 
