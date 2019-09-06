@@ -184,11 +184,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Rich\\Source\\Repos\\PGShoppingBasket\\PGShoppingBasket.Domain\\PGShoppingBasket.Domain.csproj",
+      "projectUniqueName": "C:\\Users\\Rich\\source\\repos\\PGShoppingBasket\\PGShoppingBasket.Domain\\PGShoppingBasket.Domain.csproj",
       "projectName": "PGShoppingBasket.Domain",
-      "projectPath": "C:\\Users\\Rich\\Source\\Repos\\PGShoppingBasket\\PGShoppingBasket.Domain\\PGShoppingBasket.Domain.csproj",
+      "projectPath": "C:\\Users\\Rich\\source\\repos\\PGShoppingBasket\\PGShoppingBasket.Domain\\PGShoppingBasket.Domain.csproj",
       "packagesPath": "C:\\Users\\Rich\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Rich\\Source\\Repos\\PGShoppingBasket\\PGShoppingBasket.Domain\\obj\\",
+      "outputPath": "C:\\Users\\Rich\\source\\repos\\PGShoppingBasket\\PGShoppingBasket.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
