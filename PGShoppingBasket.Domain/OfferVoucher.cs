@@ -7,16 +7,28 @@ namespace PGShoppingBasket.Domain
     public class OfferVoucher
     {
         public string Code { get; }
-        public double Amount { get; }
-        public double BasketThreshold { get; }
-        public Guid[] CategoryIds { get; }
+        public decimal Amount { get; }
+        public decimal BasketThreshold { get; }
+        public ProductCategory Category { get; }
 
-        public OfferVoucher(string code, double amount, double basketThreshold, Guid[] categoryIds = null)
+        public OfferVoucher(string code, decimal amount, decimal basketThreshold, ProductCategory category = null)
         {
             Code = code;
             Amount = amount;
             BasketThreshold = basketThreshold;
-            CategoryIds = categoryIds ?? new Guid[0];
+            Category = category;
+        }
+
+        public override string ToString()
+        {
+            var voucherBuilder = new StringBuilder($"£{Amount} off");
+
+            if (Category != null)
+                voucherBuilder.Append($" {Category.Name} in");
+
+            voucherBuilder.Append($" baskets over £{BasketThreshold} Offer Voucher {Code}");
+
+            return voucherBuilder.ToString();
         }
     }
 }

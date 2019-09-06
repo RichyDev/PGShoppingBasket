@@ -7,12 +7,17 @@ namespace PGShoppingBasket.Domain
     public class GiftVoucher
     {
         public string Code { get; }
-        public double Amount { get; }
+        public decimal Amount { get; }
 
-        public GiftVoucher(string code, double amount)
+        public GiftVoucher(string code, decimal amount)
         {
             Code = code;
             Amount = amount;
+        }
+
+        public override string ToString()
+        {
+            return $"{Amount} Gift Voucher {Code}";
         }
     }
 }

@@ -15,7 +15,7 @@ namespace PGShoppingBasket.Test
 
             foreach (var p in basket.Products)
             {
-                basketBuilder.AppendLine($"{p.Quantity} {p.Name} @ {p.Total}");
+                basketBuilder.AppendLine($"{p.Quantity} {p.Name} @ £{p.Total}");
             }
 
             basketBuilder.AppendLine("------------");

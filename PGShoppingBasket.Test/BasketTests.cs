@@ -34,16 +34,16 @@ namespace PGShoppingBasket.Test
             _headGearCategory = new ProductCategory("Head Gear");
             _giftVoucherCategory = new ProductCategory("Gift Vouchers");
 
-            _cheapHatProduct = new BasketProduct("Hat", 10.50, _headWearCategory.Id, 1);
-            _expensiveJumperProduct = new BasketProduct("Jumper", 54.65, _topsCategory.Id, 1);
-            _cheapJumperProduct = new BasketProduct("Jumper", 26.00, _topsCategory.Id, 1);
-            _headLightProduct = new BasketProduct("Hat", 10.50, _headGearCategory.Id, 1);
-            _thirtyPoundGiftVoucherProduct = new BasketProduct("£30 Gift Voucher ", 30.00, _giftVoucherCategory.Id, 1);
+            _cheapHatProduct = new BasketProduct("Hat", 10.50m, _headWearCategory, 1);
+            _expensiveJumperProduct = new BasketProduct("Jumper", 54.65m, _topsCategory, 1);
+            _cheapJumperProduct = new BasketProduct("Jumper", 26.00m, _topsCategory, 1);
+            _headLightProduct = new BasketProduct("Hat", 10.50m, _headGearCategory, 1);
+            _thirtyPoundGiftVoucherProduct = new BasketProduct("£30 Gift Voucher ", 30.00m, _giftVoucherCategory, 1);
 
-            _fivePoundGiftVoucher = new GiftVoucher("XXX-XXX", 5.00);
+            _fivePoundGiftVoucher = new GiftVoucher("XXX-XXX", 5.00m);
 
-            _headGearOfferVoucher = new OfferVoucher("YYY-YYY", 5.00, 50.01, new []{ _headGearCategory.Id });
-            _fiveOffFiftyOfferVoucher = new OfferVoucher("YYY-YYY", 5.00, 50.01);
+            _headGearOfferVoucher = new OfferVoucher("YYY-YYY", 5.00m, 50.00m, _headGearCategory);
+            _fiveOffFiftyOfferVoucher = new OfferVoucher("YYY-YYY", 5.00m, 50.00m);
         }
 
         // Scenario: Basket 1
