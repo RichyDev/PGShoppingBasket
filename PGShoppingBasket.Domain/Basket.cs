@@ -6,12 +6,12 @@ namespace PGShoppingBasket.Domain
 {
     public class Basket : Entity, IAggregateRoot
     {
-        private bool _isDirty = false;
+        public bool IsDirty { get; private set; }
 
-        public Customer Customer { get; }
+        private Customer _customer;
 
-        private readonly List<BasketProduct> _products = new List<BasketProduct>();
-        public IEnumerable<BasketProduct> Products => _products;
+        private readonly List<Product> _products = new List<Product>();
+        public IEnumerable<Product> Products => _products;
 
         private readonly List<OfferVoucher> _offerVouchers = new List<OfferVoucher>();
         public IEnumerable<OfferVoucher> OfferVouchers => _offerVouchers;
@@ -24,10 +24,10 @@ namespace PGShoppingBasket.Domain
 
         public Basket(Customer customer)
         {
-            Customer = customer;
+            _customer = customer;
         }
 
-        public void AddProduct(BasketProduct product)
+        public void AddProduct(Product product)
         {
             var existingProduct = _products.SingleOrDefault(x => x.Id == product.Id);
 
@@ -45,7 +45,7 @@ namespace PGShoppingBasket.Domain
                 _products.Add(product);
             }
 
-            _isDirty = true;
+            IsDirty = true;
         }
 
         public void ApplyOfferVoucher(OfferVoucher offerVoucher)
@@ -55,7 +55,7 @@ namespace PGShoppingBasket.Domain
 
             _offerVouchers.Add(offerVoucher);
 
-            _isDirty = true;
+            IsDirty = true;
         }
 
         public void RedeemGiftVoucher(GiftVoucher giftVoucher)
@@ -65,7 +65,7 @@ namespace PGShoppingBasket.Domain
 
             _giftVouchers.Add(giftVoucher);
 
-            _isDirty = true;
+            IsDirty = true;
         }
 
         public decimal GetTotal()
@@ -89,9 +89,9 @@ namespace PGShoppingBasket.Domain
                 var discount = GetVoucherOfferDiscount(voucher);
 
                 // Make sure the total of the products is enough to reach the voucher threshold
-                if (discountableProductsTotal <= voucher.BasketThreshold)
+                if (voucher.BasketThreshold.HasValue && discountableProductsTotal <= voucher.BasketThreshold.Value)
                 {
-                    var amountNeeded = voucher.BasketThreshold - discountableProductsTotal + 0.01m; //The 1p is needed to take it over the threshold
+                    var amountNeeded = voucher.BasketThreshold.Value - discountableProductsTotal + 0.01m; //The 1p is needed to take it over the threshold
                     _messages.Add($"You have not reached the spend threshold for voucher {voucher.Code}. Spend another £{amountNeeded} to receive £{voucher.Amount} discount from your basket total.");
                     continue;
                 }

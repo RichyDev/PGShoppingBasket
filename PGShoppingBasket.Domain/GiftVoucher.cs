@@ -11,7 +11,14 @@ namespace PGShoppingBasket.Domain
 
         public GiftVoucher(string code, decimal amount)
         {
+            if (string.IsNullOrEmpty(code))
+                throw new ArgumentNullException(nameof(code));
+
             Code = code;
+
+            if (amount <= 0.00m)
+                throw new ArgumentOutOfRangeException(nameof(amount));
+
             Amount = amount;
         }
 

@@ -11,7 +11,11 @@ namespace PGShoppingBasket.Domain
 
         public ProductCategory(string name, bool cannotBeDiscounted = false)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name));
+
             Name = name;
+
             CannotBeDiscounted = cannotBeDiscounted;
         }
     }

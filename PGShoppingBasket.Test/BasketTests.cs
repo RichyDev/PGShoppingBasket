@@ -15,12 +15,12 @@ namespace PGShoppingBasket.Test
         private readonly ProductCategory _headGearCategory;
         private readonly ProductCategory _giftVoucherCategory;
 
-        private readonly BasketProduct _expensiveHatProduct;
-        private readonly BasketProduct _cheapHatProduct;
-        private readonly BasketProduct _expensiveJumperProduct;
-        private readonly BasketProduct _cheapJumperProduct;
-        private readonly BasketProduct _headLightProduct;
-        private readonly BasketProduct _thirtyPoundGiftVoucherProduct;
+        private readonly Product _expensiveHatProduct;
+        private readonly Product _cheapHatProduct;
+        private readonly Product _expensiveJumperProduct;
+        private readonly Product _cheapJumperProduct;
+        private readonly Product _headLightProduct;
+        private readonly Product _thirtyPoundGiftVoucherProduct;
 
         private readonly GiftVoucher _fivePoundGiftVoucher;
 
@@ -30,17 +30,15 @@ namespace PGShoppingBasket.Test
         public BasketTests()
         {
             _customer = new Customer();
-            _headWearCategory = new ProductCategory("Head Wear");
-            _topsCategory = new ProductCategory("Tops");
             _headGearCategory = new ProductCategory("Head Gear");
             _giftVoucherCategory = new ProductCategory("Gift Vouchers", true);
 
-            _expensiveHatProduct = new BasketProduct("Hat", 25.00m, _headWearCategory, 1);
-            _cheapHatProduct = new BasketProduct("Hat", 10.50m, _headWearCategory, 1);
-            _expensiveJumperProduct = new BasketProduct("Jumper", 54.65m, _topsCategory, 1);
-            _cheapJumperProduct = new BasketProduct("Jumper", 26.00m, _topsCategory, 1);
-            _headLightProduct = new BasketProduct("Head Light", 3.50m, _headGearCategory, 1);
-            _thirtyPoundGiftVoucherProduct = new BasketProduct("£30 Gift Voucher ", 30.00m, _giftVoucherCategory, 1);
+            _expensiveHatProduct = new Product("Hat", 25.00m, 1);
+            _cheapHatProduct = new Product("Hat", 10.50m, 1);
+            _expensiveJumperProduct = new Product("Jumper", 54.65m, 1);
+            _cheapJumperProduct = new Product("Jumper", 26.00m, 1);
+            _headLightProduct = new Product("Head Light", 3.50m, 1, _headGearCategory);
+            _thirtyPoundGiftVoucherProduct = new Product("£30 Gift Voucher ", 30.00m, 1, _giftVoucherCategory);
 
             _fivePoundGiftVoucher = new GiftVoucher("XXX-XXX", 5.00m);
 
