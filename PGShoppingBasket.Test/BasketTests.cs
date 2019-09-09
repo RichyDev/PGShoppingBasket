@@ -33,7 +33,7 @@ namespace PGShoppingBasket.Test
             _headWearCategory = new ProductCategory("Head Wear");
             _topsCategory = new ProductCategory("Tops");
             _headGearCategory = new ProductCategory("Head Gear");
-            _giftVoucherCategory = new ProductCategory("Gift Vouchers");
+            _giftVoucherCategory = new ProductCategory("Gift Vouchers", true);
 
             _expensiveHatProduct = new BasketProduct("Hat", 25.00m, _headWearCategory, 1);
             _cheapHatProduct = new BasketProduct("Hat", 10.50m, _headWearCategory, 1);

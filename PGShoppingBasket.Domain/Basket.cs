@@ -70,44 +70,61 @@ namespace PGShoppingBasket.Domain
 
         public decimal GetTotal()
         {
-            var productTotal = 0.00m;
+            var total = _products.Sum(x => x.Price);
 
-            foreach (var p in _products)
+            total = ApplyOfferVouchers(total);
+
+            total = ApplyGiftVouchers(total);
+
+            return total;
+        }
+
+        private decimal ApplyOfferVouchers(decimal total)
+        {
+            var discountableProductsTotal = _products.Where(x => x.Category == null || 
+                                                                 !x.Category.CannotBeDiscounted).Sum(x => x.Price);
+
+            foreach (var voucher in _offerVouchers)
             {
-                productTotal += p.Total;
-            }
-
-            var total = productTotal;
-
-            foreach (var o in _offerVouchers)
-            {
-                var discount = o.Amount;
-
-                if (o.Category != null)
-                {
-                    // This is a voucher for a specific product category. So get those products
-                    var categoryProducts = _products.Where(x => x.Category == o.Category).ToList();
-
-                    if (categoryProducts.Count == 0)
-                    {
-                        _messages.Add($"There are no products in your basket applicable to voucher Voucher {o.Code}");
-                        break;
-                    }
-
-                    // See what the total of the qualifying category vouchers is
-                    var categoryProductsTotal = categoryProducts.Sum(x => x.Total);
-
-                    // if the qualifying total is less than the voucher then use the qualifying total
-                    discount = o.Amount >= categoryProductsTotal ? categoryProductsTotal : o.Amount;
-                }
+                var discount = GetVoucherOfferDiscount(voucher);
 
                 // Make sure the total of the products is enough to reach the voucher threshold
-                if (productTotal > o.BasketThreshold)
+                if (discountableProductsTotal > voucher.BasketThreshold)
                 {
                     total -= discount;
                 }
             }
 
+            return total;
+        }
+
+        private decimal GetVoucherOfferDiscount(OfferVoucher voucher)
+        {
+            var discount = voucher.Amount;
+
+            if (voucher.Category != null)
+            {
+                // This is a voucher for a specific product category. So get those products
+                var categoryProducts = _products.Where(x => x.Category == voucher.Category).ToList();
+
+                if (categoryProducts.Count == 0)
+                {
+                    _messages.Add($"There are no products in your basket applicable to voucher Voucher {voucher.Code}");
+                    return 0.00m;
+                }
+
+                // See what the total of the qualifying category vouchers is
+                var categoryProductsTotal = categoryProducts.Sum(x => x.Total);
+
+                // if the qualifying total is less than the voucher then use the qualifying total
+                discount = voucher.Amount >= categoryProductsTotal ? categoryProductsTotal : voucher.Amount;
+            }
+
+            return discount;
+        }
+
+        private decimal ApplyGiftVouchers(decimal total)
+        {
             foreach (var g in _giftVouchers)
             {
                 total -= g.Amount;
