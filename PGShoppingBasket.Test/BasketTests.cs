@@ -46,7 +46,15 @@ namespace PGShoppingBasket.Test
             _fiveOffFiftyOfferVoucher = new OfferVoucher("YYY-YYY", 5.00m, 50.00m);
         }
 
-        // Scenario: Basket 1
+        /// <summary>
+        /// Basket 1:
+        /// 1 Hat @ £10.50
+        /// 1 Jumper @ £54.65
+        /// ------------
+        /// 1 x £5.00 Gift Voucher XXX-XXX applied
+        /// ------------
+        /// Total: £60.15
+        /// </summary>
         [Test]
         public void Basket1_GivenItemsInBasket_WhenApplyGiftVoucher_ThenTotalIsCorrect()
         {
@@ -64,8 +72,16 @@ namespace PGShoppingBasket.Test
             Assert.AreEqual(60.15, basket.GetTotal());
             Assert.IsEmpty(basket.Messages);
         }
-
-        // Scenario: Basket 2
+        /// <summary>
+        /// Basket 2:
+        /// 1 Hat @ £25.00
+        /// 1 Jumper @ £26.00
+        /// ------------
+        /// 1 x £5.00 off Head Gear in baskets over £50.00 Offer Voucher YYY-YYY applied
+        /// ------------
+        /// Total: £51.00
+        /// Message: “There are no products in your basket applicable to voucher Voucher YYY-YYY.”
+        /// </summary>
         [Test]
         public void Basket2_GivenItemsInBasket_WhenApplyOfferVoucherNotReachingThreshold_ThenTotalIsCorrectAndMessageDisplayed()
         {
@@ -84,7 +100,16 @@ namespace PGShoppingBasket.Test
             Assert.Contains("There are no products in your basket applicable to voucher Voucher YYY-YYY", basket.Messages.ToArray());
         }
 
-        // Scenario: Basket 3
+        /// <summary>
+        /// Basket 3:
+        /// 1 Hat @ £25.00
+        /// 1 Jumper @ £26.00
+        /// 1 Head Light(Head Gear Category of Product)  @ £3.50
+        ///     ------------
+        ///     1 x £5.00 off Head Gear in baskets over £50.00 Offer Voucher YYY-YYY applied
+        /// ------------
+        /// Total: £51.00
+        /// </summary>
         [Test]
         public void Basket3_GivenItemsInBasket_WhenApplyOfferVoucherReachingThreshold_ThenDiscountDoesNotExceedQualifyingItemPriceAndTotalIsCorrect()
         {
@@ -104,7 +129,16 @@ namespace PGShoppingBasket.Test
             Assert.IsEmpty(basket.Messages);
         }
 
-        // Scenario: Basket 4
+        /// <summary>
+        /// Basket 4:
+        /// 1 Hat @ £25.00
+        /// 1 Jumper @ £26.00
+        /// ------------
+        /// 1 x £5.00 Gift Voucher XXX-XXX applied
+        /// 1 x £5.00 off baskets over £50.00 Offer Voucher YYY-YYY applied
+        /// ------------
+        /// Total: £41.00
+        /// </summary>
         [Test]
         public void Basket4_GivenItemsInBasket_WhenApplyGiftVoucherAndApplyOfferVoucher_ThenTotalIsCorrect()
         {
@@ -124,7 +158,17 @@ namespace PGShoppingBasket.Test
             Assert.IsEmpty(basket.Messages);
         }
 
-        // Scenario: Basket 5
+        /// <summary>
+        /// Basket 5:
+        /// 1 Hat @ £25.00
+        /// 1 £30 Gift Voucher @ £30.00
+        /// ------------
+        /// 1 x £5.00 off baskets over £50.00 Offer Voucher YYY-YYY applied
+        /// ------------
+        /// Total: £55.00
+        /// ------------
+        /// Message: “You have not reached the spend threshold for voucher YYY-YYY.Spend another £25.01 to receive £5.00 discount from your basket total.”
+        /// </summary>
         [Test]
         public void Basket5_GivenItemsInBasketIncludingGiftVoucher_WhenApplyOfferVoucherNotReachingThreshold_ThenTotalIsCorrectAndMessageDisplayed()
         {

@@ -4,22 +4,11 @@ using System.Text;
 
 namespace PGShoppingBasket.Domain
 {
-    public class GiftVoucher
+    public class GiftVoucher : Voucher
     {
-        public string Code { get; }
-        public decimal Amount { get; }
-
-        public GiftVoucher(string code, decimal amount)
+        public GiftVoucher(string code, decimal amount) : base(code, amount)
         {
-            if (string.IsNullOrEmpty(code))
-                throw new ArgumentNullException(nameof(code));
 
-            Code = code;
-
-            if (amount <= 0.00m)
-                throw new ArgumentOutOfRangeException(nameof(amount));
-
-            Amount = amount;
         }
 
         public override string ToString()
