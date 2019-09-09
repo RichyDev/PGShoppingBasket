@@ -89,10 +89,14 @@ namespace PGShoppingBasket.Domain
                 var discount = GetVoucherOfferDiscount(voucher);
 
                 // Make sure the total of the products is enough to reach the voucher threshold
-                if (discountableProductsTotal > voucher.BasketThreshold)
+                if (discountableProductsTotal <= voucher.BasketThreshold)
                 {
-                    total -= discount;
+                    var amountNeeded = voucher.BasketThreshold - discountableProductsTotal + 0.01m; //The 1p is needed to take it over the threshold
+                    _messages.Add($"You have not reached the spend threshold for voucher {voucher.Code}. Spend another £{amountNeeded} to receive £{voucher.Amount} discount from your basket total.");
+                    continue;
                 }
+
+                total -= discount;
             }
 
             return total;
@@ -127,6 +131,7 @@ namespace PGShoppingBasket.Domain
         {
             foreach (var g in _giftVouchers)
             {
+                // TODO What if total goes below 0?
                 total -= g.Amount;
             }
 
