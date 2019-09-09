@@ -1,9 +1,0 @@
-C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\bin\Debug\netstandard2.0\PGShoppingBasket.Domain.deps.json
-C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\bin\Debug\netstandard2.0\PGShoppingBasket.Domain.dll
-C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\bin\Debug\netstandard2.0\PGShoppingBasket.Domain.pdb
-C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\netstandard2.0\PGShoppingBasket.Domain.csproj.CoreCompileInputs.cache
-C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\netstandard2.0\PGShoppingBasket.Domain.AssemblyInfoInputs.cache
-C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\netstandard2.0\PGShoppingBasket.Domain.AssemblyInfo.cs
-C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\netstandard2.0\PGShoppingBasket.Domain.dll
-C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\netstandard2.0\PGShoppingBasket.Domain.pdb
-C:\Users\Rich\source\repos\PGShoppingBasket\PGShoppingBasket.Domain\obj\Debug\netstandard2.0\PGShoppingBasket.Domain.csprojAssemblyReference.cache
