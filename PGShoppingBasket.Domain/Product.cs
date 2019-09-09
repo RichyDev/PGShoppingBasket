@@ -10,9 +10,8 @@ namespace PGShoppingBasket.Domain
         public decimal Price { get; }
         public ProductCategory Category { get; }
         public int Quantity { get; set; }
-        public decimal Total => Quantity * Price;
 
-        public Product(string name, decimal price, int quantity, ProductCategory category = null)
+        public Product(string name, decimal price, ProductCategory category = null)
         {
             if(string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
@@ -22,11 +21,6 @@ namespace PGShoppingBasket.Domain
             Price = price;
 
             Category = category;
-
-            if (quantity <= 0)
-                throw new ArgumentNullException(nameof(quantity));
-
-            Quantity = quantity;
         }
     }
 }

@@ -10,8 +10,8 @@ namespace PGShoppingBasket.Domain
 
         private Customer _customer;
 
-        private readonly List<Product> _products = new List<Product>();
-        public IEnumerable<Product> Products => _products;
+        private readonly List<BasketProduct> _products = new List<BasketProduct>();
+        public IEnumerable<BasketProduct> Products => _products;
 
         private readonly List<OfferVoucher> _offerVouchers = new List<OfferVoucher>();
         public IEnumerable<OfferVoucher> OfferVouchers => _offerVouchers;
@@ -27,22 +27,20 @@ namespace PGShoppingBasket.Domain
             _customer = customer;
         }
 
-        public void AddProduct(Product product)
+        public void AddProduct(Product product, int quantity = 1)
         {
-            var existingProduct = _products.SingleOrDefault(x => x.Id == product.Id);
+            var existingProduct = _products.SingleOrDefault(x => x.Product.Id == product.Id);
 
             if (existingProduct != null)
             {
                 // Allows the same product to be added multiple times, with the quantity updated
-                // This also allows the price to be changed if it was updated whilst the basket existed
-                var originalQuantity = existingProduct.Quantity;
-                product.Quantity += originalQuantity;
-                _products.Remove(existingProduct);
-                _products.Add(product);
+                // This also allows the price, name, etc.. to be changed if it was updated whilst the basket existed
+                existingProduct.Quantity += quantity;
+                existingProduct.Product = product;
             }
             else
             {
-                _products.Add(product);
+                _products.Add(new BasketProduct(product, quantity));
             }
 
             IsDirty = true;
@@ -70,7 +68,7 @@ namespace PGShoppingBasket.Domain
 
         public decimal GetTotal()
         {
-            var total = _products.Sum(x => x.Price);
+            var total = _products.Sum(x => x.Product.Price);
 
             total = ApplyOfferVouchers(total);
 
@@ -81,8 +79,8 @@ namespace PGShoppingBasket.Domain
 
         private decimal ApplyOfferVouchers(decimal total)
         {
-            var discountableProductsTotal = _products.Where(x => x.Category == null || 
-                                                                 !x.Category.CannotBeDiscounted).Sum(x => x.Price);
+            var discountableProductsTotal = _products.Where(x => x.Product.Category == null || 
+                                                                 !x.Product.Category.CannotBeDiscounted).Sum(x => x.Product.Price);
 
             foreach (var voucher in _offerVouchers)
             {
@@ -109,7 +107,7 @@ namespace PGShoppingBasket.Domain
             if (voucher.Category != null)
             {
                 // This is a voucher for a specific product category. So get those products
-                var categoryProducts = _products.Where(x => x.Category == voucher.Category).ToList();
+                var categoryProducts = _products.Where(x => x.Product.Category == voucher.Category).ToList();
 
                 if (categoryProducts.Count == 0)
                 {

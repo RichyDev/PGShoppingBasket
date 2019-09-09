@@ -33,12 +33,12 @@ namespace PGShoppingBasket.Test
             _headGearCategory = new ProductCategory("Head Gear");
             _giftVoucherCategory = new ProductCategory("Gift Vouchers", true);
 
-            _expensiveHatProduct = new Product("Hat", 25.00m, 1);
-            _cheapHatProduct = new Product("Hat", 10.50m, 1);
-            _expensiveJumperProduct = new Product("Jumper", 54.65m, 1);
-            _cheapJumperProduct = new Product("Jumper", 26.00m, 1);
-            _headLightProduct = new Product("Head Light", 3.50m, 1, _headGearCategory);
-            _thirtyPoundGiftVoucherProduct = new Product("£30 Gift Voucher ", 30.00m, 1, _giftVoucherCategory);
+            _expensiveHatProduct = new Product("Hat", 25.00m);
+            _cheapHatProduct = new Product("Hat", 10.50m);
+            _expensiveJumperProduct = new Product("Jumper", 54.65m);
+            _cheapJumperProduct = new Product("Jumper", 26.00m);
+            _headLightProduct = new Product("Head Light", 3.50m, _headGearCategory);
+            _thirtyPoundGiftVoucherProduct = new Product("£30 Gift Voucher ", 30.00m, _giftVoucherCategory);
 
             _fivePoundGiftVoucher = new GiftVoucher("XXX-XXX", 5.00m);
 
